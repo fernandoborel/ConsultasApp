@@ -7,37 +7,38 @@ namespace ConsultasApp.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ConsultasController : ControllerBase
+public class MedicosController : ControllerBase
 {
-    private readonly IConsultaAppService _consultaAppService;
+    private readonly IMedicoAppService _medicoAppService;
 
-    public ConsultasController(IConsultaAppService consultaAppService)
+    public MedicosController(IMedicoAppService medicoAppService)
     {
-        _consultaAppService = consultaAppService;
+        _medicoAppService = medicoAppService;
     }
 
     [HttpGet("obter-todos")]
-    [ProducesResponseType(typeof(List<ConsultaResponse>), 200)]
+    [ProducesResponseType(typeof(List<MedicoResponse>), 200)]
     [ProducesResponseType(typeof(object), 400)]
     [ProducesResponseType(typeof(string), 500)]
     public async Task<IActionResult> ObterTodos()
     {
-        var consultas = await _consultaAppService.ObterTodos();
-        return Ok(consultas);
+        var medicos = await _medicoAppService.ObterTodos();
+        return Ok(medicos);
     }
 
     [HttpPost("adicionar")]
-    [ProducesResponseType(typeof(ConsultaResponse), 200)]
+    [ProducesResponseType(typeof(MedicoResponse), 200)]
     [ProducesResponseType(typeof(object), 400)]
     [ProducesResponseType(typeof(string), 500)]
-    public async Task<IActionResult> Adicionar([FromBody] ConsultaRequest request)
+    public async Task<IActionResult> Adicionar([FromBody] MedicoRequest request)
     {
         if (request == null)
-            return BadRequest("Dados da consulta não podem ser nulos.");
+            return BadRequest("Dados do médico não podem ser nulos.");
+
         try
         {
-            var consulta = await _consultaAppService.Adicionar(request);
-            return Ok(consulta);
+            var medico = await _medicoAppService.Adicionar(request);
+            return Ok(medico);
         }
         catch (ApplicationException ex)
         {

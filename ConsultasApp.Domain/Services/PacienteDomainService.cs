@@ -1,8 +1,9 @@
 ﻿using ConsultasApp.Domain.Entities;
 using ConsultasApp.Domain.Interfaces.Repositories;
 using ConsultasApp.Domain.Interfaces.Services;
+using Microsoft.EntityFrameworkCore;
 
-namespace ConsultasApp.Domain.Services;
+namespace ConsultasApp.Domain.Services; 
 
 public class PacienteDomainService(IUnitOfWork unitOfWork) : IPacienteDomainService
 {
@@ -12,6 +13,10 @@ public class PacienteDomainService(IUnitOfWork unitOfWork) : IPacienteDomainServ
         {
             await unitOfWork.PacienteRepository.AddAsync(paciente);
             return paciente;
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new Exception("Erro ao salvar o paciente: " + ex.InnerException?.Message, ex);
         }
         catch (Exception ex)
         {
@@ -23,6 +28,11 @@ public class PacienteDomainService(IUnitOfWork unitOfWork) : IPacienteDomainServ
     {
         await unitOfWork.PacienteRepository.UpdateAsync(paciente);
         return paciente;
+    }
+
+    public async Task<Paciente> ObterPorCpfAsync(string cpf)
+    {
+        return await unitOfWork.PacienteRepository.ObterPorCpfAsync(cpf);
     }
 
     public async Task<Paciente> ObterPorId(int id)

@@ -1,12 +1,11 @@
-﻿namespace ConsultasApp.Domain.Entities;
+﻿namespace ConsultasApp.Application.Dtos.Response;
 
-public class Medico
+public class MedicoResponse
 {
     public int Id { get; set; }
     public string Nome { get; set; }
     public int AnosDeExperiencia { get; set; }
-    public int Crm { get; set; }
+    public int CRM { get; set; }
     public DateTime DataDeNascimento { get; set; }
     public DateTime HorariosDisponiveis { get; set; }
-    public ICollection<Consulta> Consultas { get; set; } = new List<Consulta>();
 }

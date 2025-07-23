@@ -8,4 +8,5 @@ public interface IPacienteDomainService
     Task<Paciente> Atualizar(Paciente paciente);
     Task<Paciente> ObterPorId(int id);
     Task<List<Paciente>> ObterTodos();
+    Task<Paciente> ObterPorCpfAsync(string cpf);
 }

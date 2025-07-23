@@ -1,6 +1,7 @@
 ﻿using ConsultasApp.Domain.Entities;
 using ConsultasApp.Domain.Interfaces.Repositories;
 using ConsultasApp.Domain.Interfaces.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConsultasApp.Domain.Services;
 
@@ -12,6 +13,10 @@ public class MedicoDomainService(IUnitOfWork unitOfWork) : IMedicoDomainService
         {
             await unitOfWork.MedicoRepository.AddAsync(medico);
             return medico;
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new Exception("Erro ao salvar o médico informado: " + ex.InnerException?.Message, ex);
         }
         catch (Exception ex)
         {

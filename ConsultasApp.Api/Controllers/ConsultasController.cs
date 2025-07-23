@@ -26,6 +26,33 @@ public class ConsultasController : ControllerBase
         return Ok(consultas);
     }
 
+    [HttpGet("paginadas")]
+    [ProducesResponseType(typeof(List<ConsultaPaginadaResponse>), 200)]
+    [ProducesResponseType(typeof(object), 400)]
+    [ProducesResponseType(typeof(string), 500)]
+    public async Task<IActionResult> ObterConsultasPaginadas([FromQuery] int pagina = 1, [FromQuery] int tamanhoPagina = 10)
+    {
+        try
+        {
+            var (consultas, totalCount) = await _consultaAppService.ObterConsultasPaginadasAsync(pagina, tamanhoPagina);
+
+            var resultado = new
+            {
+                TotalRegistros = totalCount,
+                PaginaAtual = pagina,
+                TamanhoPagina = tamanhoPagina,
+                Consultas = consultas
+            };
+
+            return Ok(resultado);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, $"Erro interno: {ex.Message}");
+        }
+    }
+
+
     [HttpPost("adicionar")]
     [ProducesResponseType(typeof(ConsultaResponse), 200)]
     [ProducesResponseType(typeof(object), 400)]

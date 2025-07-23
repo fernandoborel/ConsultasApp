@@ -6,6 +6,7 @@ public class MedicoResponse
     public string Nome { get; set; }
     public int AnosDeExperiencia { get; set; }
     public int CRM { get; set; }
+    public string Especialidade { get; set; }
     public DateTime DataDeNascimento { get; set; }
     public DateTime HorariosDisponiveis { get; set; }
 }

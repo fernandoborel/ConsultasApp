@@ -1,6 +1,7 @@
 ﻿using ConsultasApp.Domain.Entities;
 using ConsultasApp.Domain.Interfaces.Repositories;
 using ConsultasApp.Domain.Interfaces.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConsultasApp.Domain.Services;
 
@@ -50,6 +51,39 @@ public class ConsultasDomainService : IConsultaDomainService
     {
         return await _unitOfWork.MedicoRepository.MedicoEstaDisponivelAsync(medicoId, dataHora);
     }
+
+    public async Task<(List<ConsultaResumo> Consultas, int TotalCount)> ObterConsultasPaginadasAsync(int pagina, int tamanhoPagina)
+    {
+        // Calcula o skip para paginação
+        int skip = (pagina - 1) * tamanhoPagina;
+
+        // Query base do repositório (supondo que tenha IQueryable para consultas)
+        var query = _unitOfWork.ConsultaRepository
+            .GetQueryable() // método que retorna IQueryable<Consulta>, implemente se não tiver
+            .Include(c => c.Medico)
+            .Include(c => c.Paciente);
+
+        // Total de registros antes da paginação
+        int totalCount = await query.CountAsync();
+
+        // Aplica paginação e faz o select para o DTO ConsultaResumo
+        var consultas = await query
+            .OrderBy(c => c.DataHora)
+            .Skip(skip)
+            .Take(tamanhoPagina)
+            .Select(c => new ConsultaResumo
+            {
+                ConsultaId = c.Id,
+                NomeMedico = c.Medico.Nome,
+                Especialidade = c.Medico.Especialidade,
+                NomePaciente = c.Paciente.Nome,
+                DataHora = c.DataHora
+            })
+            .ToListAsync();
+
+        return (consultas, totalCount);
+    }
+
 
     public async Task<Medico> ObterMedicoPorIdAsync(int medicoId)
     {

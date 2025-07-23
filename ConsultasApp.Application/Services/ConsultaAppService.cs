@@ -68,6 +68,23 @@ public class ConsultaAppService : IConsultaAppService
         };
     }
 
+    public async Task<(List<ConsultaPaginadaResponse> Consultas, int TotalCount)> ObterConsultasPaginadasAsync(int pagina, int tamanhoPagina)
+    {
+        var (consultasResumo, totalCount) = await _consultaDomainService.ObterConsultasPaginadasAsync(pagina, tamanhoPagina);
+
+        var consultasResponse = consultasResumo.Select(c => new ConsultaPaginadaResponse
+        {
+            Id = c.ConsultaId,
+            NomeMedico = c.NomeMedico,
+            EspecialidadeMedico = c.Especialidade,
+            NomePaciente = c.NomePaciente,
+            DataHora = c.DataHora
+        }).ToList();
+
+        return (consultasResponse, totalCount);
+    }
+
+
     public async Task<List<Consulta>> ObterTodos()
     {
         return await _consultaDomainService.ObterTodos();

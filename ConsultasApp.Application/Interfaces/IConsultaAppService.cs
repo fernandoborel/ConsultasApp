@@ -8,4 +8,5 @@ public interface IConsultaAppService
 {
     Task<ConsultaResponse> Adicionar(ConsultaRequest request);
     Task<List<Consulta>> ObterTodos();
+    Task<(List<ConsultaPaginadaResponse> Consultas, int TotalCount)> ObterConsultasPaginadasAsync(int pagina, int tamanhoPagina);
 }

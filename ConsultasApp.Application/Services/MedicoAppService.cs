@@ -33,6 +33,7 @@ public class MedicoAppService : IMedicoAppService
             AnosDeExperiencia = request.AnosDeExperiencia,
             DataDeNascimento = request.DataDeNascimento,
             Crm = request.CRM,
+            Especialidade = request.Especialidade,
             HorariosDisponiveis = request.HorariosDisponiveis
         };
 
@@ -44,6 +45,7 @@ public class MedicoAppService : IMedicoAppService
             Nome = medicoCadastrado.Nome,
             AnosDeExperiencia = medicoCadastrado.AnosDeExperiencia,
             CRM = medicoCadastrado.Crm,
+            Especialidade = medicoCadastrado.Especialidade,
             DataDeNascimento = medicoCadastrado.DataDeNascimento,
             HorariosDisponiveis = medicoCadastrado.HorariosDisponiveis
         };

@@ -20,6 +20,11 @@ public class ConsultaRepository : BaseRepository<Consulta>, IConsultaRepository
             .AnyAsync(c => c.MedicoId == medicoId && c.DataHora == dataHora);
     }
 
+    public IQueryable<Consulta> GetQueryable()
+    {
+        return _context.Set<Consulta>().AsQueryable();
+    }
+
     public async Task<Consulta> ObterPorIdAsync(int id)
     {
         return await _context.Consultas
